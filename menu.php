@@ -215,10 +215,13 @@
         }
         .formulario-ejemplo input[type="text"] {
             padding: 8px;
-            width: 250px;
+            width: 300px;
             border: 1px solid #ccc;
             border-radius: 4px;
             margin-bottom: 15px;
+        }
+        .formulario-ejemplo input[type="radio"] {
+            margin-right: 5px;
         }
         .formulario-ejemplo input[type="submit"] {
             background: #e94560;
@@ -227,6 +230,7 @@
             padding: 8px 20px;
             border-radius: 4px;
             cursor: pointer;
+            margin-top: 10px;
         }
         .formulario-ejemplo input[type="submit"]:hover {
             background: #c7354e;
@@ -237,6 +241,11 @@
             border-radius: 5px;
             margin-top: 20px;
         }
+        .resultado-exito {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
         .metodo-info {
             background: #e8f4f8;
             padding: 10px;
@@ -244,86 +253,19 @@
             margin-bottom: 20px;
             font-size: 12px;
         }
-        
-        .ejemplo-libreria {
-            background: white;
-            color: #333;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            border-radius: 5px;
-            overflow: hidden;
-        }
-        .ejemplo-libreria .header {
-            background: #f5f5f5;
-            padding: 12px 15px;
-            font-weight: bold;
-            border-bottom: 1px solid #ddd;
-        }
-        .ejemplo-libreria .content {
-            padding: 20px 15px;
-            background: white;
-        }
-        .ejemplo-libreria .footer {
-            background: #f5f5f5;
-            padding: 12px 15px;
-            border-top: 1px solid #ddd;
-            font-style: italic;
-        }
-        
-        .frame-container {
-            background: white;
-            border-radius: 5px;
-            overflow: hidden;
-        }
-        .frame-header {
-            background: #f5f5f5;
-            padding: 10px 15px;
-            border-bottom: 1px solid #ddd;
-        }
-        .frame-header a {
-            color: #0066cc;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        .frame-header a:hover {
-            text-decoration: underline;
-        }
-        iframe {
-            width: 100%;
-            height: 400px;
-            border: 1px solid #ccc;
-            background: white;
-        }
         hr {
             margin: 10px 0;
             border: none;
             border-top: 1px solid #ccc;
         }
-        
-        /* Estilo para codigo PHP */
-        .codigo-php {
-            background: #1e1e1e;
-            color: #d4d4d4;
-            padding: 15px;
+        .codigo-ejemplo {
+            background: #f5f5f5;
+            padding: 10px;
             border-radius: 5px;
-            font-family: 'Consolas', monospace;
-            font-size: 12px;
-            overflow-x: auto;
+            font-family: monospace;
+            font-size: 11px;
             margin-bottom: 15px;
-        }
-        .codigo-php .tag {
-            color: #569cd6;
-        }
-        .codigo-php .function {
-            color: #dcdcaa;
-        }
-        .codigo-php .string {
-            color: #ce9178;
-        }
-        .codigo-php .variable {
-            color: #9cdcfe;
-        }
-        .codigo-php .comment {
-            color: #6a9955;
+            border-left: 3px solid #e94560;
         }
     </style>
 </head>
@@ -356,7 +298,7 @@
     </div>
 
     <script>
-        // Variables globales para almacenar el nombre ingresado en ambos formularios
+        // Variables globales
         let nombreIngresadoGet = '';
         let nombreIngresadoPost = '';
 
@@ -394,6 +336,47 @@
             return false;
         };
 
+        // Función para simular envío de email
+        window.enviarEmailSimulado = function(event) {
+            event.preventDefault();
+            const direccion = document.getElementById('emailDireccion').value;
+            const tipo = document.querySelector('input[name="tipo"]:checked').value;
+            const resultadoDiv = document.getElementById('resultadoEmail');
+            
+            if (!direccion || direccion.trim() === '') {
+                resultadoDiv.innerHTML = '<div class="resultado" style="background:#ffe0e0;"><strong>Error:</strong> Por favor ingrese una direccion de email</div>';
+                return;
+            }
+            
+            // Simular el contenido del email según el formato
+            let mensajeEmail = '';
+            if (tipo === 'plano') {
+                mensajeEmail = `Ejemplo de envio de email de texto plano
+
+PHP.
+http://www.php.net/
+Manuales para desarrolladores web.`;
+            } else {
+                mensajeEmail = `<html><head><title>PHP. Manual de PHP</title></head><body>
+Ejemplo de envio de email de HTML<br><br>
+PHP.<br>
+http://www.php.net/<br>
+<u>Manuales</u> para <b>desarrolladores</b> web.
+</body></html>`;
+            }
+            
+            resultadoDiv.innerHTML = `<div class="resultado resultado-exito">
+                <strong>✓ Email simulado enviado correctamente</strong><br><br>
+                <strong>Destinatario:</strong> ${direccion}<br>
+                <strong>Formato:</strong> ${tipo === 'plano' ? 'Texto plano' : 'HTML'}<br>
+                <strong>Asunto:</strong> Ejemplo de envio de email<br>
+                <strong>Contenido:</strong><br>
+                <div style="background:#fff; padding:10px; margin-top:10px; border-radius:5px; font-family:monospace; font-size:12px;">${mensajeEmail.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>
+                <br>
+                <strong>Cabeceras:</strong> FROM: Pruebas &lt;webmaster@hotmail.com&gt;
+            </div>`;
+        };
+
         const programs = {};
 
         // PROGRAMA 1
@@ -407,7 +390,7 @@
         programs[8] = { title: "2.7 Bucle while", output: "El valor de i es 0<br>El valor de i es 1<br>El valor de i es 2<br>El valor de i es 3<br>El valor de i es 4<br>El valor de i es 5<br>El valor de i es 6<br>El valor de i es 7<br>El valor de i es 8<br>El valor de i es 9" };
         programs[9] = { title: "2.7 Bucle for", output: "El valor de i es 0<br>El valor de i es 1<br>El valor de i es 2<br>El valor de i es 3<br>El valor de i es 4<br>El valor de i es 5<br>El valor de i es 6<br>El valor de i es 7<br>El valor de i es 8<br>El valor de i es 9" };
         programs[10] = { title: "2.8 printf con formatos", output: "El numero dos con diferentes formatos: 2 2.000000 2.00" };
-        programs[11] = { title: "2.8 printf con variables y tabla", output: "Puede facilmente intercalar texto con numeros 3 <br><table border=1 cellpadding=5><tr><td align=right>0</td><td align=right>1</td><td align=right>2</td><td align=right>3</td><td align=right>4</td></tr><table>" };
+        programs[11] = { title: "2.8 printf con variables y tabla", output: "Puede facilmente intercalar texto con numeros 3 <br><table border=1 cellpadding=5><tr><td align=right>0</td><td align=right>1</td><td align=right>2</td><td align=right>3</td><td align=right>4</td></tr></table>" };
         programs[12] = { title: "2.9 strlen()", output: "strlen('12345'): 5" };
         programs[13] = { title: "2.9 explode()", output: "explode(): <br>Esto<br>es<br>una<br>prueba" };
         programs[14] = { title: "2.9 sprintf()", output: "sprintf(): 8x5 = 40 <br>" };
@@ -421,8 +404,6 @@
         programs[22] = { title: "2.13 Verificacion de tipos - gettype()", output: "gettype($entero): integer<br>gettype($decimal): double<br>gettype($texto): string" };
         programs[23] = { title: "2.13 is_int() y otras funciones", output: "is_int($entero): true<br>is_string($texto): true<br>is_array($entero): false" };
         programs[24] = { title: "2.14 Funciones personalizadas", output: "Media de 4 y 6: 5<br>Media de 3242 y 524543: 263892.5" };
-        
-        // PROGRAMA 25
         programs[25] = { title: "3.1 Librerias - include (Ejemplo 1)", output: `<div style="background:white; color:#333; padding:0; border-radius:5px;">
     <div style="background:#f5f5f5; padding:12px 15px; font-weight:bold; border-bottom:1px solid #ddd;">Esta cabecera estará en todas sus páginas.</div>
     <div style="padding:20px 15px; background:white;">
@@ -436,8 +417,6 @@
         Autor: John Doe
     </div>
 </div>` };
-        
-        // PROGRAMA 26
         programs[26] = { title: "3.2 Paginas con plantillas (Ejemplo 2)", output: `<div style="background:white; color:#333; padding:0; border-radius:5px;">
     <div style="background:#f5f5f5; padding:12px 15px; font-weight:bold; border-bottom:1px solid #ddd;">Esta cabecera estará en todas sus páginas.</div>
     <div style="padding:20px 15px; background:white;">
@@ -454,8 +433,6 @@
         Autor: John Doe
     </div>
 </div>` };
-        
-        // PROGRAMA 27
         programs[27] = { title: "3.3 Enlace externo con frame", output: `<div style="background:white; border-radius:5px; overflow:hidden;">
     <div style="background:#f5f5f5; padding:10px 15px; border-bottom:1px solid #ddd;">
         <a href="https://www.php.net" target="contenidoFrame" style="color:#0066cc; text-decoration:none;">Ir a PHP.net</a> |
@@ -476,74 +453,77 @@
         '></iframe>
     </div>
 </div>` };
-        
         programs[28] = { title: "4.1 register_globals - Uso de GET", output: "Nombre recibido: Juan" };
         programs[29] = { title: "4.1 Uso de POST", output: "Formulario POST para enviar datos" };
         programs[30] = { title: "4.1 Uso de $_SERVER", output: "IP del cliente: 127.0.0.1<br>Navegador: Mozilla/5.0<br>Metodo de peticion: GET" };
-        
-        // PROGRAMA 31 - FORMULARIO SIMPLE (GET)
-        programs[31] = { 
-            title: "5.1 Formulario simple (GET)", 
-            output: `<div class="formulario-ejemplo">
-                <h1>Ejemplo de procesado de formularios</h1>
-                <div class="metodo-info"><strong>Metodo GET:</strong> Los datos se envian en la URL</div>
-                <form id="formularioGet" onsubmit="procesarFormularioGet(event)">
+        programs[31] = { title: "5.1 Formulario simple (GET)", output: `<div class="formulario-ejemplo">
+            <h1>Ejemplo de procesado de formularios</h1>
+            <div class="metodo-info"><strong>Metodo GET:</strong> Los datos se envian en la URL</div>
+            <form id="formularioGet" onsubmit="procesarFormularioGet(event)">
+                <label>Introduzca su nombre:</label>
+                <input type="text" id="nombreInputGet" name="nombre" placeholder="Escriba su nombre">
+                <br>
+                <input type="submit" value="Enviar">
+            </form>
+            <div id="resultadoFormularioGet" style="margin-top:20px;"></div>
+        </div>` };
+        programs[32] = { title: "5.2 Metodo GET vs POST", output: `<div class="formulario-ejemplo">
+            <h1>Ejemplo de procesado de formularios</h1>
+            <div style="margin-bottom:30px;">
+                <h3 style="color:#e94560;">Metodo GET</h3>
+                <div class="metodo-info"><strong>GET:</strong> Los datos van en la URL (se pueden ver en la barra de direcciones)</div>
+                <form id="formularioGetVsPost" onsubmit="procesarFormularioGet(event)">
                     <label>Introduzca su nombre:</label>
                     <input type="text" id="nombreInputGet" name="nombre" placeholder="Escriba su nombre">
                     <br>
-                    <input type="submit" value="Enviar">
+                    <input type="submit" value="Enviar con GET">
                 </form>
                 <div id="resultadoFormularioGet" style="margin-top:20px;"></div>
-            </div>`
-        };
+            </div>
+            <hr style="margin:20px 0;">
+            <div style="margin-bottom:20px;">
+                <h3 style="color:#2ea043;">Metodo POST</h3>
+                <div class="metodo-info"><strong>POST:</strong> Los datos van en el cuerpo de la peticion (no se ven en la URL)</div>
+                <form id="formularioPostVsGet" onsubmit="procesarFormularioPost(event)">
+                    <label>Introduzca su nombre:</label>
+                    <input type="text" id="nombreInputPost" name="nombre" placeholder="Escriba su nombre">
+                    <br>
+                    <input type="submit" value="Enviar con POST">
+                </form>
+                <div id="resultadoFormularioPost" style="margin-top:20px;"></div>
+            </div>
+        </div>` };
         
-        // PROGRAMA 32 - METODO GET vs POST
-        programs[32] = { 
-            title: "5.2 Metodo GET vs POST", 
+        // PROGRAMA 33 - ENVIO DE EMAILS (5.3)
+        programs[33] = { 
+            title: "5.3 Envio de emails - mail()", 
             output: `<div class="formulario-ejemplo">
-                <h1>Ejemplo de procesado de formularios</h1>
-                
-                <div style="margin-bottom:30px;">
-                    <h3 style="color:#e94560;">Metodo GET</h3>
-                    <div class="metodo-info"><strong>GET:</strong> Los datos van en la URL (se pueden ver en la barra de direcciones)</div>
-                    <form id="formularioGetVsPost" onsubmit="procesarFormularioGet(event)">
-                        <label>Introduzca su nombre:</label>
-                        <input type="text" id="nombreInputGet" name="nombre" placeholder="Escriba su nombre">
-                        <br>
-                        <input type="submit" value="Enviar con GET">
-                    </form>
-                    <div id="resultadoFormularioGet" style="margin-top:20px;"></div>
+                <h1>Ejemplo de envio de email</h1>
+                <div class="codigo-ejemplo">
+                    <strong>Sintaxis:</strong><br>
+                    mail(destinatario, tema, texto del mensaje);<br>
+                    mail(destinatario, tema, texto del mensaje, informacion adicional de cabecera);
                 </div>
-                
-                <hr style="margin:20px 0;">
-                
-                <div style="margin-bottom:20px;">
-                    <h3 style="color:#2ea043;">Metodo POST</h3>
-                    <div class="metodo-info"><strong>POST:</strong> Los datos van en el cuerpo de la peticion (no se ven en la URL)</div>
-                    <form id="formularioPostVsGet" onsubmit="procesarFormularioPost(event)">
-                        <label>Introduzca su nombre:</label>
-                        <input type="text" id="nombreInputPost" name="nombre" placeholder="Escriba su nombre">
-                        <br>
-                        <input type="submit" value="Enviar con POST">
-                    </form>
-                    <div id="resultadoFormularioPost" style="margin-top:20px;"></div>
-                </div>
+                <form id="formularioEmail" onsubmit="enviarEmailSimulado(event)">
+                    <label>Introduzca su direccion de email:</label>
+                    <input type="text" id="emailDireccion" name="direccion" placeholder="ejemplo@dominio.com">
+                    <br><br>
+                    <strong>Formato:</strong><br>
+                    <input type="radio" name="tipo" value="plano" checked> Texto plano<br>
+                    <input type="radio" name="tipo" value="html"> HTML<br><br>
+                    <input type="submit" value="Enviar">
+                </form>
+                <div id="resultadoEmail" style="margin-top:20px;"></div>
             </div>`
         };
         
-        programs[33] = { title: "5.3 Envio de emails - mail()", output: "Correo preparado para enviar a: ejemplo@dominio.com<br>Asunto: Prueba de correo<br>Mensaje: Este es un mensaje de prueba desde PHP" };
-        
-        // PROGRAMA 34 - CONEXION A BASE DE DATOS (6.1)
-        programs[34] = { 
-            title: "6.1 Conexion a base de datos", 
-            output: `<div style="background:white; color:#333; padding:20px; border-radius:5px;">
-                <h1 style="font-size:1.3em; margin-bottom:15px;">Ejemplo de conexion a base de datos</h1>
-                <div class="resultado" style="margin-top:15px;">
-                    <strong>Conexion con la base de datos conseguida.</strong>
-                </div>
-            </div>`
-        };
-        
+        // PROGRAMA 34
+        programs[34] = { title: "6.1 Conexion a base de datos", output: `<div style="background:white; color:#333; padding:20px; border-radius:5px;">
+            <h1 style="font-size:1.3em; margin-bottom:15px;">Ejemplo de conexion a base de datos</h1>
+            <div class="resultado" style="margin-top:15px;">
+                <strong>Conexion con la base de datos conseguida.</strong>
+            </div>
+        </div>` };
         programs[35] = { title: "6.2 Consultas a la base de datos", output: "Consulta SQL: SELECT * FROM prueba<br>Resultados:<br><table border='1'><tr><th>ID</th><th>Nombre</th><th>Apellidos</th><tr><td>1</td><td>Juan<\/td><td>Perez<\/td><\/tr><tr><td>2<\/td><td>Maria<\/td><td>Gonzalez<\/td><\/tr><\/table>" };
         programs[36] = { title: "6.3 Insercion de registros", output: "INSERT SQL: INSERT INTO prueba (Nombre, Apellidos) VALUES ('Juan', 'Perez')<br>Registro insertado correctamente" };
         programs[37] = { title: "6.4 Borrado de registros", output: "DELETE SQL: DELETE FROM prueba WHERE ID_Prueba = 1<br>Registro eliminado correctamente" };
