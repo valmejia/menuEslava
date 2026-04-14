@@ -1,0 +1,27 @@
+<?php
+// execute.php - Archivo para ejecutar los códigos PHP
+if (isset($_POST['code'])) {
+    $code = $_POST['code'];
+    
+    // Limpiar el código para evitar inyecciones maliciosas
+    $code = stripslashes($code);
+    
+    // Usar output buffering para capturar la salida
+    ob_start();
+    
+    try {
+        // Evaluar el código PHP
+        eval('?>' . $code);
+        $output = ob_get_clean();
+        echo $output;
+    } catch (ParseError $e) {
+        ob_clean();
+        echo '<div class="error-message">Error de sintaxis: ' . $e->getMessage() . '</div>';
+    } catch (Exception $e) {
+        ob_clean();
+        echo '<div class="error-message">Error: ' . $e->getMessage() . '</div>';
+    }
+} else {
+    echo '<div class="error-message">No se recibió código para ejecutar</div>';
+}
+?>

@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menú de Ejemplos PHP</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .menu-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .menu-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-align: left;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .menu-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .menu-btn:active {
+            transform: translateY(0);
+        }
+
+        .output-section {
+            padding: 30px;
+            background: #ffffff;
+        }
+
+        .output-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .output-header h2 {
+            color: #333;
+            font-size: 1.5em;
+        }
+
+        .clear-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .clear-btn:hover {
+            background: #c82333;
+            transform: scale(1.05);
+        }
+
+        .output-content {
+            background: #2d2d2d;
+            border-radius: 10px;
+            padding: 20px;
+            min-height: 400px;
+            max-height: 600px;
+            overflow: auto;
+            font-family: 'Courier New', monospace;
+            color: #f8f8f2;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.3);
+        }
+
+        .program-title {
+            color: #50fa7b;
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            border-left: 3px solid #50fa7b;
+            padding-left: 10px;
+        }
+
+        .program-output {
+            color: #f1fa8c;
+            line-height: 1.6;
+        }
+
+        .error-message {
+            color: #ff5555;
+            background: rgba(255,85,85,0.1);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 3px solid #ff5555;
+        }
+
+        .info-message {
+            color: #8be9fd;
+            text-align: center;
+            padding: 40px;
+            font-style: italic;
+        }
+
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1e1e1e;
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #667eea;
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #764ba2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📚 Manual de PHP Interactivo</h1>
+            <p>Selecciona un ejemplo para ver su ejecución</p>
+        </div>
+
+        <div class="menu-section">
+            <h3>🎯 Selecciona un programa:</h3>
+            <div class="menu-grid">
+                <button class="menu-btn" onclick="loadProgram(1)">1. Echo básico y bucle for</button>
+                <button class="menu-btn" onclick="loadProgram(2)">2. Variables y tipos de datos</button>
+                <button class="menu-btn" onclick="loadProgram(3)">3. Operadores aritméticos</button>
+                <button class="menu-btn" onclick="loadProgram(4)">4. Operadores de comparación</button>
+                <button class="menu-btn" onclick="loadProgram(5)">5. Operadores lógicos</button>
+                <button class="menu-btn" onclick="loadProgram(6)">6. Estructura if-else</button>
+                <button class="menu-btn" onclick="loadProgram(7)">7. Estructura switch</button>
+                <button class="menu-btn" onclick="loadProgram(8)">8. Bucle while</button>
+                <button class="menu-btn" onclick="loadProgram(9)">9. Bucle for</button>
+                <button class="menu-btn" onclick="loadProgram(10)">10. printf con formatos</button>
+                <button class="menu-btn" onclick="loadProgram(11)">11. printf con variables y tabla</button>
+                <button class="menu-btn" onclick="loadProgram(12)">12. Funciones de strings</button>
+                <button class="menu-btn" onclick="loadProgram(13)">13. Arrays básicos</button>
+                <button class="menu-btn" onclick="loadProgram(14)">14. Funciones personalizadas</button>
+            </div>
+        </div>
+
+        <div class="output-section">
+            <div class="output-header">
+                <h2>💻 Salida del programa</h2>
+                <button class="clear-btn" onclick="clearOutput()">Limpiar pantalla</button>
+            </div>
+            <div class="output-content" id="output">
+                <div class="info-message">
+                    👈 Haz clic en cualquier botón del menú para ver la ejecución del programa PHP
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Todos los programas en formato string para ejecutar via AJAX
+        const programs = {
+            1: `<?php
+echo "Parte de PHP<br>";
+for($i=0;$i<10;$i++)
+{
+    echo "Linea ".$i."<br>";
+}
+?>`,
+            2: `<?php
+$a = 1;
+$b = 3.34;
+$c = "Hola Mundo";
+echo $a,"<br>",$b,"<br>",$c;
+?>`,
+            3: `<?php
+$a = 8;
+$b = 3;
+echo $a + $b,"<br>";
+echo $a - $b,"<br>";
+echo $a * $b,"<br>";
+echo $a / $b,"<br>";
+$a++;
+echo $a,"<br>";
+$b--;
+echo $b,"<br>";
+?>`,
+            4: `<?php
+$a = 8;
+$b = 3;
+$c = 3;
+echo "¿8 es igual a 3? " . ($a == $b ? "true" : "false") . "<br>";
+echo "¿8 es diferente de 3? " . ($a != $b ? "true" : "false") . "<br>";
+echo "¿8 es menor que 3? " . ($a < $b ? "true" : "false") . "<br>";
+echo "¿8 es mayor que 3? " . ($a > $b ? "true" : "false") . "<br>";
+echo "¿8 es mayor o igual a 3? " . ($a >= $c ? "true" : "false") . "<br>";
+echo "¿3 es menor o igual a 3? " . ($b <= $c ? "true" : "false") . "<br>";
+?>`,
+            5: `<?php
+$a = 8;
+$b = 3;
+$c = 3;
+echo "AND: (8==3) && (3>3) = " . ((($a == $b) && ($c > $b)) ? "true" : "false") . "<br>";
+echo "OR: (8==3) || (3==3) = " . ((($a == $b) || ($b == $c)) ? "true" : "false") . "<br>";
+echo "NOT: !(3<=3) = " . (!($b <= $c) ? "true" : "false") . "<br>";
+?>`,
+            6: `<?php
+$a = 8;
+$b = 3;
+if ($a < $b) { 
+    echo "a es menor que b"; 
+} else { 
+    echo "a no es menor que b"; 
+}
+?>`,
+            7: `<?php
+$posicion = "arriba";
+switch($posicion) { 
+    case "arriba":
+        echo "La variable contiene el valor arriba"; 
+        break; 
+    case "abajo":
+        echo "La variable contiene el valor abajo"; 
+        break; 
+    default:
+        echo "La variable contiene otro valor distinto de arriba y abajo"; 
+}
+?>`,
+            8: `<?php
+$i=0;
+while ($i<10) { 
+    echo "El valor de i es " . $i . "<br>";
+    $i++; 
+}
+?>`,
+            9: `<?php
+for($i=0 ; $i<10 ; $i++) { 
+    echo "El valor de i es " . $i . "<br>";
+}
+?>`,
+            10: `<?php
+printf("El numero dos con diferentes formatos: %d %f %.2f",2,2,2);
+?>`,
+            11: `<?php
+$var="texto";
+$num=3;
+printf("Puede fácilmente intercalar <b>%s</b> con números <b>%d</b> <br>",$var,$num);
+printf("<TABLE BORDER=1 CELLPADDING=20 style='border-collapse: collapse;'>");
+for ($i=0;$i<5;$i++) {
+    printf("<tr><td>%10.d</td></tr>",$i);
+}
+printf("</table>");
+?>`,
+            12: `<?php
+echo "strlen('12345'): " . strlen("12345") . "<br>";
+$palabras = explode(" ","Esto es una prueba");
+echo "explode(): <br>";
+for($i=0;$i<count($palabras);$i++) 
+    echo $palabras[$i] . "<br>";
+$resultado = sprintf("8x5 = %d <br>",8*5);
+echo "sprintf(): " . $resultado . "<br>";
+echo "substr('Devuelve una subcadena de otra',9,3): " . substr("Devuelve una subcadena de otra",9,3) . "<br><br>";
+if (chop("Cadena \n\n ") == "Cadena") 
+    echo "chop(): Iguales<br><br>";
+echo "strpos('Busca la palabra dentro de la frase', 'palabra'): " . strpos("Busca la palabra dentro de la frase", "palabra") . "<br><br>";
+echo "str_replace(): " . str_replace("verde","rojo","Un pez de color verde, como verde es la hierba.") . "<br>";
+?>`,
+            13: `<?php
+$mi_array = array("Pos0", "Pos1", "Pos2", "Pos3", "Pos4", "Pos5");
+echo "Mi_array es: ";
+print_r($mi_array);
+echo "<br>";
+echo "Mi_array[5] es: " . $mi_array[5] . "<br>";
+$mi_array[5] = "Posición 6ta";
+echo "Mi_array[5] es: " . $mi_array[5] . "<br>";
+echo "Mi_array es: ";
+print_r($mi_array);
+echo "<br>";
+?>`,
+            14: `<?php
+function media_aritmetica($a, $b) {
+    $media = ($a + $b) / 2;
+    return $media;
+}
+echo "Media de 4 y 6: " . media_aritmetica(4,6) . "<br>";
+echo "Media de 3242 y 524543: " . media_aritmetica(3242,524543) . "<br>";
+?>
+`
+        };
+
+        async function loadProgram(programId) {
+            const outputDiv = document.getElementById('output');
+            
+            // Mostrar loading
+            outputDiv.innerHTML = `
+                <div class="info-message">
+                    ⏳ Ejecutando programa PHP...
+                </div>
+            `;
+
+            const code = programs[programId];
+            
+            try {
+                const response = await fetch('execute.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: 'code=' + encodeURIComponent(code)
+                });
+                
+                const result = await response.text();
+                
+                // Mostrar resultado con formato
+                outputDiv.innerHTML = `
+                    <div class="program-title">
+                        📄 Programa ${programId}
+                    </div>
+                    <div class="program-output">
+                        ${result || '<div class="error-message">⚠️ No se generó salida</div>'}
+                    </div>
+                `;
+            } catch (error) {
+                outputDiv.innerHTML = `
+                    <div class="error-message">
+                        ❌ Error al ejecutar: ${error.message}<br><br>
+                        <strong>Nota:</strong> Este demo requiere un servidor PHP. 
+                        Para funcionar correctamente, necesitas:<br>
+                        1. Un servidor web con PHP instalado (como XAMPP, WAMP, MAMP)<br>
+                        2. Guardar este archivo como .php en el servidor<br>
+                        3. Crear el archivo execute.php en el mismo directorio
+                    </div>
+                `;
+            }
+        }
+
+        function clearOutput() {
+            document.getElementById('output').innerHTML = `
+                <div class="info-message">
+                    ✨ Pantalla limpia. Selecciona otro programa del menú ✨
+                </div>
+            `;
+        }
+
+        // Para desarrollo sin servidor PHP, mostrar el código fuente
+        function showSource(programId) {
+            const outputDiv = document.getElementById('output');
+            const code = programs[programId];
+            
+            outputDiv.innerHTML = `
+                <div class="program-title">
+                    📄 Código fuente del programa ${programId}
+                </div>
+                <div class="program-output" style="white-space: pre-wrap; font-family: monospace;">
+                    ${escapeHtml(code)}
+                </div>
+            
+            `;
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Modificar loadProgram para mostrar código si no hay servidor PHP
+        window.loadProgram = function(programId) {
+            showSource(programId);
+        };
+    </script>
+</body>
+</html>
