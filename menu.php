@@ -559,7 +559,7 @@
         <div class="sidebar">
             <div class="sidebar-header">
                 <h2>✦ Manual de PHP ✦</h2>
-                <span class="program-count">59 Programas</span>
+                <span class="program-count">60 Programas</span>
             </div>
             <div class="menu-container" id="menuContainer">
             </div>

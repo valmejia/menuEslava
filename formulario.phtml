@@ -1,0 +1,7 @@
+<?php
+include("Conexion_BD.php");
+$link=Conectarse();
+mysql_query("insert into prueba (Nombre,Apellidos) values
+('$nombre','$apellidos')",$link);
+header("Location: Consulta_BD.php");
+?>
