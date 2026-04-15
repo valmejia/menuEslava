@@ -196,18 +196,120 @@
             color: #8b949e;
         }
 
+        /* Estilos para autenticación */
+        .auth-container {
+            background: white;
+            color: #333;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        .auth-container h1 {
+            font-size: 1.3em;
+            margin-bottom: 20px;
+        }
+        .acceso-exitoso {
+            background: #d4edda;
+            color: #155724;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+        .error-acceso {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .btn-iniciar {
+            background: #e94560;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .btn-iniciar:hover {
+            background: #c7354e;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            width: 380px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .modal-content h3 {
+            margin-bottom: 15px;
+        }
+        .modal-info {
+            background: #e0e0e0;
+            padding: 8px;
+            margin-bottom: 15px;
+            font-size: 12px;
+        }
+        .modal-content label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+        }
+        .modal-content input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .btn-aceptar {
+            background: #e94560;
+            color: white;
+            padding: 8px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .btn-cancelar {
+            background: #6c757d;
+            color: white;
+            padding: 8px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
         /* Estilos para cookies */
         .cookie-container {
             background: white;
             color: #333;
             padding: 20px;
             border-radius: 5px;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         .cookie-container h1 {
             font-size: 1.3em;
             margin-bottom: 20px;
-            color: #333;
         }
         .cookie-form input {
             margin: 5px 0 10px;
@@ -225,9 +327,6 @@
             padding: 8px 20px;
             cursor: pointer;
             margin-top: 10px;
-        }
-        .cookie-form input[type="submit"]:hover {
-            background: #c7354e;
         }
         .cookie-info {
             background: #f0f0f0;
@@ -248,16 +347,12 @@
             cursor: pointer;
             margin-top: 15px;
         }
-        .btn-volver:hover {
-            background: #5a6268;
-        }
         .mensaje-exito {
             background: #d4edda;
             color: #155724;
             padding: 10px;
             border-radius: 5px;
             margin-bottom: 15px;
-            border: 1px solid #c3e6cb;
         }
         .cookie-recuperada {
             background: #d4edda;
@@ -304,8 +399,69 @@
         </div>
     </div>
 
+    <!-- Modal global de autenticación -->
+    <div id="authModal" class="modal-overlay">
+        <div class="modal-content">
+            <h3>Escribir contraseña de red</h3>
+            <div class="modal-info">
+                <strong>Sitio:</strong> www.webestilo.com<br>
+                <strong>Dominio:</strong> Acceso restringido
+            </div>
+            <label>Nombre de usuario:</label>
+            <input type="text" id="authUsuario" value="Joe">
+            <label>Contraseña:</label>
+            <input type="password" id="authContrasena" value="123">
+            <div style="margin: 15px 0;">
+                <input type="checkbox" id="guardarPass"> 
+                <label for="guardarPass" style="display: inline;">Guardar esta contraseña en la lista de contraseñas</label>
+            </div>
+            <div class="modal-buttons">
+                <button class="btn-aceptar" onclick="procesarAutenticacion()">Aceptar</button>
+                <button class="btn-cancelar" onclick="cancelarAutenticacion()">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // ==================== COOKIES SIMULADAS GLOBALES ====================
+        // ==================== AUTENTICACIÓN ====================
+        window.mostrarModalAuth = function() {
+            const modal = document.getElementById('authModal');
+            if (modal) {
+                modal.style.display = 'flex';
+            }
+        };
+
+        window.procesarAutenticacion = function() {
+            const usuario = document.getElementById('authUsuario').value;
+            const contrasena = document.getElementById('authContrasena').value;
+            const resultadoDiv = document.getElementById('resultadoAutenticacion');
+            
+            if (resultadoDiv) {
+                if (usuario === "Joe" && contrasena === "123") {
+                    resultadoDiv.innerHTML = '<div class="acceso-exitoso">Ha conseguido el acceso a la <strong>zona restringida</strong>.</div>';
+                } else {
+                    resultadoDiv.innerHTML = '<div class="error-acceso"><strong>Authorization Required.</strong><br>Nombre de usuario o contraseña incorrectos.</div>';
+                }
+            }
+            
+            const modal = document.getElementById('authModal');
+            if (modal) {
+                modal.style.display = 'none';
+            }
+        };
+
+        window.cancelarAutenticacion = function() {
+            const resultadoDiv = document.getElementById('resultadoAutenticacion');
+            if (resultadoDiv) {
+                resultadoDiv.innerHTML = '<div class="error-acceso"><strong>Authorization Required.</strong><br>Acceso denegado por el usuario.</div>';
+            }
+            const modal = document.getElementById('authModal');
+            if (modal) {
+                modal.style.display = 'none';
+            }
+        };
+
+        // ==================== COOKIES SIMULADAS ====================
         let cookiesSimuladas = {};
 
         function cargarCookies() {
@@ -322,12 +478,7 @@
         }
 
         function establecerCookie(nombre, valor, horas) {
-            const expiracion = new Date();
-            expiracion.setTime(expiracion.getTime() + (horas * 60 * 60 * 1000));
-            cookiesSimuladas[nombre] = {
-                valor: valor,
-                expira: expiracion.toLocaleString()
-            };
+            cookiesSimuladas[nombre] = { valor: valor, expira: horas + ' horas' };
             guardarCookies();
             return true;
         }
@@ -341,29 +492,7 @@
 
         cargarCookies();
 
-        // ==================== FUNCIÓN PARA RECUPERAR COOKIE (Programa 46) ====================
-        window.recuperarCookie = function() {
-            const resultadoDiv = document.getElementById('cookieRecuperadaResultado');
-            const valorCookie = obtenerCookie('ejemusuario');
-            
-            if (resultadoDiv) {
-                if (valorCookie) {
-                    resultadoDiv.innerHTML = `
-                        <div class="cookie-recuperada">
-                            Se ha establecido una cookie de nombre <strong>ejemusuario</strong> con el valor: <strong class="cookie-valor">${valorCookie}</strong>
-                        </div>
-                    `;
-                } else {
-                    resultadoDiv.innerHTML = `
-                        <div class="cookie-no-existe">
-                            ⚠️ No hay ninguna cookie establecida. Primero use el programa "9.1 Establecer cookies" para crear una cookie.
-                        </div>
-                    `;
-                }
-            }
-        };
-
-        // ==================== FUNCIÓN PARA ESTABLECER COOKIE (Programa 45) ====================
+        // Programa 45 - Establecer cookie
         window.establecerCookieEjemplo = function(event) {
             event.preventDefault();
             const nombreInput = document.getElementById('cookieNombre');
@@ -407,6 +536,28 @@
             document.getElementById('cookieNombre').value = '';
         };
 
+        // Programa 46 - Recuperar cookie
+        window.recuperarCookie = function() {
+            const resultadoDiv = document.getElementById('cookieRecuperadaResultado');
+            const valorCookie = obtenerCookie('ejemusuario');
+            
+            if (resultadoDiv) {
+                if (valorCookie) {
+                    resultadoDiv.innerHTML = `
+                        <div class="cookie-recuperada">
+                            Se ha establecido una cookie de nombre <strong>ejemusuario</strong> con el valor: <strong class="cookie-valor">${valorCookie}</strong>
+                        </div>
+                    `;
+                } else {
+                    resultadoDiv.innerHTML = `
+                        <div class="cookie-no-existe">
+                            ⚠️ No hay ninguna cookie establecida. Primero use el programa "9.1 Establecer cookies" para crear una cookie.
+                        </div>
+                    `;
+                }
+            }
+        };
+
         // ==================== CARRITO DE COMPRAS ====================
         let carritoCompras = {};
 
@@ -447,7 +598,6 @@
             } else {
                 for (const [producto, cantidad] of Object.entries(carritoCompras)) {
                     const div = document.createElement('div');
-                    div.className = 'carrito-item';
                     div.innerHTML = `Artículo: ${producto}  ud: ${cantidad}`;
                     container.appendChild(div);
                 }
@@ -496,46 +646,6 @@
         };
 
         cargarCarrito();
-
-        // ==================== FUNCIONES DE AUTENTICACIÓN ====================
-        let autenticado = false;
-
-        window.mostrarModalAuth = function() {
-            const modal = document.getElementById('authModalGlobal');
-            if (modal) modal.style.display = 'flex';
-        };
-
-        window.ocultarModalAuth = function() {
-            const modal = document.getElementById('authModalGlobal');
-            if (modal) modal.style.display = 'none';
-        };
-
-        window.procesarAuth = function() {
-            const usuarioInput = document.getElementById('authUsuarioGlobal');
-            const contrasenaInput = document.getElementById('authContrasenaGlobal');
-            const resultadoDiv = document.getElementById('resultadoAutenticacionGlobal');
-            
-            if (usuarioInput && contrasenaInput && resultadoDiv) {
-                const usuario = usuarioInput.value;
-                const contrasena = contrasenaInput.value;
-                
-                if (usuario === "Joe" && contrasena === "123") {
-                    autenticado = true;
-                    resultadoDiv.innerHTML = '<div class="acceso-exitoso">Ha conseguido el acceso a la <strong>zona restringida</strong>.</div>';
-                    window.ocultarModalAuth();
-                } else {
-                    resultadoDiv.innerHTML = '<div class="error-acceso"><strong>Authorization Required.</strong><br>Nombre de usuario o contraseña incorrectos.</div>';
-                }
-            }
-        };
-
-        window.cancelarAuth = function() {
-            const resultadoDiv = document.getElementById('resultadoAutenticacionGlobal');
-            if (resultadoDiv) {
-                resultadoDiv.innerHTML = '<div class="error-acceso"><strong>Authorization Required.</strong><br>Acceso denegado por el usuario.</div>';
-            }
-            window.ocultarModalAuth();
-        };
 
         // ==================== BASE DE DATOS SIMULADA ====================
         let datosRegistros = [];
@@ -613,7 +723,7 @@
                 const row = tbody.insertRow();
                 row.insertCell(0).innerHTML = datosRegistros[i].nombre;
                 row.insertCell(1).innerHTML = datosRegistros[i].apellidos;
-                row.insertCell(2).innerHTML = `<button class="btn-borrar" onclick="eliminarRegistro(${datosRegistros[i].id})">Borra</button>`;
+                row.insertCell(2).innerHTML = `<button style="background:#dc3545; color:white; border:none; padding:5px 12px; border-radius:4px; cursor:pointer;" onclick="eliminarRegistro(${datosRegistros[i].id})">Borra</button>`;
                 row.cells[2].style.textAlign = 'center';
             }
         };
@@ -646,7 +756,7 @@
                     window.mostrarTablaInsert();
                     setTimeout(() => { mensajeDiv.innerHTML = ''; }, 3000);
                 } else {
-                    mensajeDiv.innerHTML = '<div class="mensaje-error">✗ Error: Por favor complete ambos campos</div>';
+                    mensajeDiv.innerHTML = '<div style="background:#f8d7da; color:#721c24; padding:10px; border-radius:5px;">✗ Error: Por favor complete ambos campos</div>';
                     setTimeout(() => { mensajeDiv.innerHTML = ''; }, 3000);
                 }
             }
@@ -718,11 +828,9 @@ http://www.php.net/<br>
 
         cargarDatos();
 
+        // ==================== PROGRAMAS ====================
         const programs = {};
 
-        // Programas 1-44
-        for(let i=1; i<=44; i++) { programs[i] = { title: "Programa " + i, output: "Contenido" }; }
-        
         programs[1] = { title: "2.1 Nuestro primer PHP", output: "Parte de PHP<br>Linea 0-9" };
         programs[2] = { title: "2.2 Variables y tipos", output: "1<br>3.34<br>Hola Mundo" };
         programs[3] = { title: "2.3 Operadores aritmeticos", output: "11<br>5<br>24<br>2.67<br>9<br>2" };
@@ -766,44 +874,50 @@ http://www.php.net/<br>
             <input type="submit" value="Enviar"></form><div id="resultadoEmail"></div></div>` };
         programs[34] = { title: "6.1 Conexion BD", output: "<div style='background:white; padding:20px;'><h1>Conexion</h1><div style='background:#f0f0f0; padding:15px;'><strong>Conexion con la base de datos conseguida.</strong></div></div>" };
         programs[35] = { title: "6.2 Consultas SELECT", output: "<table border='1'><tr><th>ID</th><th>Nombre</th><th>Apellidos</th><tr><td>1</td><td>Juan<\/td><td>Perez<\/td><\/tr><tr><td>2<\/td><td>Maria<\/td><td>Gonzalez<\/td><\/tr><\/table>" };
-        programs[36] = { title: "6.3 Insercion registros", output: `<div class="db-container"><h1>Ejemplo de BD con PHP y MySQL</h1>
+        programs[36] = { title: "6.3 Insercion registros", output: `<div style="background:white; padding:20px;"><h1>Ejemplo de BD con PHP y MySQL</h1>
             <form onsubmit="procesarInsercion(event)"><tr><tr><td>Nombre:</td><td><input type="text" id="dbNombre"></td></tr>
-            <tr><td>Apellidos:</td><td><input type="text" id="dbApellidos">ERC20</tr>
-            </table><input type="submit" value="Grabar"></form><div id="mensajeInsercion"></div><hr>
-            <table class="db-table" border="1"><thead><tr><th>Nombre</th><th>Apellidos</th></thead><tbody id="tablaRegistrosInsert"></tbody></table></div>` };
-        programs[37] = { title: "6.4 Borrado registros", output: `<div class="db-container"><h1>Ejemplo de BD con PHP y MySQL</h1>
+            <tr><td>Apellidos:</td><td><input type="text" id="dbApellidos"></td></tr></table>
+            <input type="submit" value="Grabar"></form><div id="mensajeInsercion"></div><hr>
+            <table border="1"><thead><tr><th>Nombre</th><th>Apellidos</th></thead><tbody id="tablaRegistrosInsert"></tbody></table></div>` };
+        programs[37] = { title: "6.4 Borrado registros", output: `<div style="background:white; padding:20px;"><h1>Ejemplo de BD con PHP y MySQL</h1>
             <div id="mensajeDelete"></div>
-            <table class="db-table" border="1"><thead><tr><th>Nombre</th><th>Apellidos</th><th>Borrar</th></thead><tbody id="tablaRegistrosDelete"></tbody></table></div>` };
-        programs[38] = { title: "7.1 Autenticacion HTTP", output: `<div class="auth-container"><h1>Autenticacion HTTP Basic</h1>
-            <div id="resultadoAutenticacionGlobal"></div>
-            <button class="btn-iniciar" onclick="mostrarModalAuth()">Iniciar autenticacion</button></div>` };
+            <table border="1"><thead><tr><th>Nombre</th><th>Apellidos</th><th>Borrar</th></thead><tbody id="tablaRegistrosDelete"></tbody></table></div>` };
+        
+        // PROGRAMA 38 - AUTENTICACIÓN HTTP
+        programs[38] = { 
+            title: "7.1 Autenticacion HTTP basica", 
+            output: `<div class="auth-container">
+                <h1>Autenticacion HTTP Basic</h1>
+                <div id="resultadoAutenticacion"></div>
+                <button class="btn-iniciar" onclick="mostrarModalAuth()">Iniciar autenticacion</button>
+            </div>`
+        };
+        
         programs[39] = { title: "7.2 Validacion archivo", output: "Acceso concedido para: joe" };
         programs[40] = { title: "7.3 Validacion .htaccess", output: "Usuario autenticado" };
         programs[41] = { title: "7.4 Validacion MySQL", output: "Usuario autenticado via MySQL" };
         programs[42] = { title: "8.1 Inicializacion sesion", output: "ID de sesion generado" };
         programs[43] = { title: "8.2 Ejemplo sesion", output: "Contador de visitas" };
-        programs[44] = { title: "8.3 Carrito compra", output: `<tt><div class="carrito-container"><h1>Carrito de compras</h1>
-            <form class="carrito-form" onsubmit="agregarAlCarrito(event)">Dime el producto <input type="text" id="productoInput" size="20"><br>
+        programs[44] = { title: "8.3 Carrito compra", output: `<div style="background:white; padding:20px;"><h1>Carrito de compras</h1>
+            <form onsubmit="agregarAlCarrito(event)">Dime el producto <input type="text" id="productoInput" size="20"><br>
             Cuantas unidades <input type="text" id="cantidadInput" size="20"><br>
             <input type="submit" value="Añadir a la cesta"><br></form>
-            <div id="mensajeCarrito"></div><div class="carrito-lista"><strong>El contenido de la cesta de la compra es:</strong><br>
-            <div id="carritoLista"></div></div><button onclick="vaciarCarrito()">Vaciar carrito</button></div></tt>` };
+            <div id="mensajeCarrito"></div><div><strong>El contenido de la cesta de la compra es:</strong><br>
+            <div id="carritoLista"></div></div><button onclick="vaciarCarrito()">Vaciar carrito</button></div>` };
         
-        // PROGRAMA 45 - ESTABLECER COOKIES (9.1)
+        // PROGRAMA 45 - ESTABLECER COOKIES
         programs[45] = { 
             title: "9.1 Establecer cookies", 
             output: `<div class="cookie-container">
                 <h1>Ejemplo de uso de cookie</h1>
-                
                 <div id="formularioCookie">
                     <form class="cookie-form" onsubmit="establecerCookieEjemplo(event)">
                         Introduzca su nombre:<br>
-                        <input type="text" id="cookieNombre" name="nombre" placeholder="Escriba su nombre">
+                        <input type="text" id="cookieNombre" placeholder="Escriba su nombre">
                         <br>
                         <input type="submit" value="Enviar">
                     </form>
                 </div>
-                
                 <div id="cookieInfo" style="display: none;">
                     <div class="cookie-info">
                         Se ha establecido una cookie de nombre <strong>ejemusuario</strong> con el valor: 
@@ -811,34 +925,24 @@ http://www.php.net/<br>
                     </div>
                     <button class="btn-volver" onclick="volverAlFormulario()">Volver</button>
                 </div>
-                
                 <div id="cookieResultado"></div>
             </div>`
         };
         
-        // PROGRAMA 46 - RECUPERAR COOKIES (9.1)
+        // PROGRAMA 46 - RECUPERAR COOKIES
         programs[46] = { 
             title: "9.1 Recuperar cookies", 
             output: `<div class="cookie-container">
                 <h1>Ejemplo de recuperar cookie</h1>
-                
                 <div id="cookieRecuperadaResultado" style="margin-bottom: 20px;">
                     <div class="cookie-info" style="background:#e8f4f8;">
                         Haga clic en el botón para recuperar la cookie "ejemusuario"
                     </div>
                 </div>
-                
-                <button onclick="recuperarCookie()" style="background: #e94560; color: white; border: none; padding: 10px 25px; border-radius: 4px; cursor: pointer; font-size: 14px;">
-                    Recuperar cookie
-                </button>
-                
-                <div style="margin-top: 20px; font-size: 12px; color: #666;">
-                    * Nota: Primero debe establecer una cookie usando el programa "9.1 Establecer cookies"
-                </div>
+                <button onclick="recuperarCookie()" style="background: #e94560; color: white; border: none; padding: 10px 25px; border-radius: 4px; cursor: pointer;">Recuperar cookie</button>
+                <div style="margin-top: 20px; font-size: 12px; color: #666;">* Nota: Primero debe establecer una cookie usando el programa "9.1 Establecer cookies"</div>
             </div>`
         };
-        
-        // NOTA: Programa 47 eliminado (Eliminar cookies)
         
         programs[48] = { title: "Arrays asociativo", output: "Capitales de paises" };
         programs[49] = { title: "Arrays multidimensional", output: "Notas de alumnos" };
@@ -852,19 +956,17 @@ http://www.php.net/<br>
         programs[57] = { title: "Manejo archivos", output: "fopen, fread, fwrite" };
         programs[58] = { title: "Lectura archivos", output: "file_get_contents" };
         programs[59] = { title: "Escritura archivos", output: "file_put_contents" };
-        programs[60] = { title: "10.1 Calendario Simple", output: "<h3>Abril 2026</h3><table border='1' cellpadding='8'><tr><th>Do</th><th>Lu</th><th>Ma</th><th>Mi</th><th>Ju</th><th>Vi</th><th>Sa</th>对待<tr><td align='center'>1<\/td><td align='center'>2<\/td><td align='center'>3<\/td><td align='center'>4<\/td><td align='center'>5<\/td><td align='center'>6<\/td><td align='center'>7<\/td><\/tr><tr><td align='center'>8<\/td><td align='center'>9<\/td><td align='center'>10<\/td><td align='center'>11<\/td><td align='center'>12<\/td><td align='center'>13<\/td><td align='center'>14<\/td><\/tr><tr><td align='center'>15<\/td><td align='center'>16<\/td><td align='center'>17<\/td><td align='center'>18<\/td><td align='center'>19<\/td><td align='center'>20<\/td><td align='center'>21<\/td><\/tr><tr><td align='center'>22<\/td><td align='center'>23<\/td><td align='center'>24<\/td><td align='center'>25<\/td><td align='center'>26<\/td><td align='center'>27<\/td><td align='center'>28<\/td><\/tr><tr><td align='center'>29<\/td><td align='center'>30<\/td><td align='center'>31<\/td><td>&nbsp;<\/td><td>&nbsp;<\/td><td>&nbsp;<\/td><td>&nbsp;<\/td><\/tr><\/table>" };
 
-        // Reorganizar los índices para que sean consecutivos (1-59)
+        // Reorganizar para que los números sean consecutivos
         const programasReorganizados = {};
         let idx = 1;
-        for (let i = 1; i <= 60; i++) {
-            if (programs[i] && i !== 47) {
+        for (let i = 1; i <= 59; i++) {
+            if (programs[i]) {
                 programasReorganizados[idx] = programs[i];
                 idx++;
             }
         }
         
-        // Reemplazar programs con la versión reorganizada
         Object.keys(programs).forEach(key => delete programs[key]);
         Object.assign(programs, programasReorganizados);
 
@@ -876,7 +978,7 @@ http://www.php.net/<br>
             const programList = document.createElement('div');
             programList.className = 'program-list';
             
-            for (let i = 1; i <= 59; i++) {
+            for (let i = 1; i <= 55; i++) {
                 if (programs[i]) {
                     const btn = document.createElement('button');
                     btn.className = 'program-btn';
@@ -922,7 +1024,7 @@ http://www.php.net/<br>
             if (outputBody) {
                 outputBody.innerHTML = `
                     <div class="info-message">
-                        Selecciona un programa del menu izquierdo (1 al 59) para ver la salida esperada
+                        Selecciona un programa del menu izquierdo (1 al 55) para ver la salida esperada
                     </div>
                 `;
             }
@@ -935,27 +1037,5 @@ http://www.php.net/<br>
             renderMenu();
         });
     </script>
-
-    <!-- Modal global de autenticación -->
-    <div id="authModalGlobal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;">
-        <div style="background: #f0f0f0; border: 1px solid #ccc; border-radius: 8px; padding: 20px; width: 380px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
-            <h3 style="margin-bottom: 15px;">Escribir contraseña de red</h3>
-            <div style="background: #e0e0e0; padding: 8px; margin-bottom: 15px; font-size: 12px;">
-                <strong>Sitio:</strong> www.webestilo.com<br>
-                <strong>Dominio:</strong> Acceso restringido
-            </div>
-            <label>Nombre de usuario:</label>
-            <input type="text" id="authUsuarioGlobal" value="Joe" style="width: 100%; padding: 8px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px;">
-            <label>Contraseña:</label>
-            <input type="password" id="authContrasenaGlobal" value="123" style="width: 100%; padding: 8px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px;">
-            <div style="margin: 15px 0;">
-                <input type="checkbox" id="guardarPassGlobal"> <label for="guardarPassGlobal" style="display: inline;">Guardar esta contraseña en la lista de contraseñas</label>
-            </div>
-            <div style="display: flex; gap: 10px;">
-                <button onclick="procesarAuth()" style="background: #e94560; color: white; padding: 8px 20px; border: none; border-radius: 4px; cursor: pointer;">Aceptar</button>
-                <button onclick="cancelarAuth()" style="background: #6c757d; color: white; padding: 8px 20px; border: none; border-radius: 4px; cursor: pointer;">Cancelar</button>
-            </div>
-        </div>
-    </div>
 </body>
 </html>
