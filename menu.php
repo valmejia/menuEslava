@@ -160,7 +160,7 @@
         .output-body {
             flex: 1;
             padding: 20px;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Courier New', monospace;
             font-size: 13px;
             line-height: 1.8;
             overflow-y: auto;
@@ -173,6 +173,7 @@
             padding-bottom: 8px;
             border-bottom: 1px solid #30363d;
             font-size: 1em;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         .output-block {
@@ -188,6 +189,7 @@
             margin-bottom: 10px;
             font-size: 0.85em;
             font-weight: normal;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         .info-message {
@@ -196,152 +198,47 @@
             color: #8b949e;
         }
 
-        /* Estilos para la autenticación */
-        .auth-container {
+        /* Estilos para el carrito */
+        .carrito-container {
             background: white;
             color: #333;
             padding: 20px;
             border-radius: 5px;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Courier New', monospace;
         }
-        .auth-container h1 {
-            font-size: 1.3em;
+        .carrito-container h1 {
+            font-size: 1.2em;
             margin-bottom: 20px;
             color: #333;
+            font-family: 'Courier New', monospace;
         }
-        .auth-modal {
-            background: #f0f0f0;
+        .carrito-form input {
+            margin: 5px 0 10px;
+            padding: 5px;
             border: 1px solid #ccc;
-            border-radius: 8px;
-            padding: 20px;
-            width: 380px;
-            margin: 0 auto;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            font-family: 'Courier New', monospace;
         }
-        .auth-modal h3 {
-            color: #333;
-            margin-bottom: 15px;
-            font-size: 1.1em;
+        .carrito-form input[type="text"] {
+            width: 200px;
         }
-        .auth-modal .info {
-            background: #e0e0e0;
-            padding: 8px;
-            margin-bottom: 15px;
-            font-size: 12px;
-        }
-        .auth-modal label {
-            display: block;
-            margin: 10px 0 5px;
-            font-weight: bold;
-        }
-        .auth-modal input {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            margin-bottom: 10px;
-        }
-        .auth-modal .checkbox {
-            display: flex;
-            align-items: center;
-            margin: 15px 0;
-        }
-        .auth-modal .checkbox input {
-            width: auto;
-            margin-right: 8px;
-        }
-        .auth-modal .buttons {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-        }
-        .auth-modal button {
-            padding: 8px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        .btn-aceptar {
-            background: #e94560;
-            color: white;
-        }
-        .btn-cancelar {
-            background: #6c757d;
-            color: white;
-        }
-        .acceso-exitoso {
-            background: #d4edda;
-            color: #155724;
-            padding: 20px;
-            border-radius: 5px;
-            text-align: center;
-            font-size: 1.2em;
-            font-weight: bold;
-        }
-        .error-acceso {
-            background: #f8d7da;
-            color: #721c24;
-            padding: 15px;
-            border-radius: 5px;
-            text-align: center;
-        }
-        .btn-iniciar {
+        .carrito-form input[type="submit"] {
             background: #e94560;
             color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
+            padding: 5px 15px;
             cursor: pointer;
+            margin-top: 10px;
+        }
+        .carrito-lista {
             margin-top: 20px;
+            padding-top: 10px;
+            border-top: 1px solid #ccc;
         }
-        .btn-iniciar:hover {
-            background: #c7354e;
+        .carrito-item {
+            margin: 5px 0;
         }
-        .mensaje-exito {
-            background: #d4edda;
-            color: #155724;
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 15px;
-            border: 1px solid #c3e6cb;
-        }
-        .mensaje-error {
-            background: #f8d7da;
-            color: #721c24;
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 15px;
-            border: 1px solid #f5c6cb;
-        }
-        .btn-borrar {
-            background: #dc3545;
-            color: white;
-            border: none;
-            padding: 5px 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 12px;
-        }
-        .btn-borrar:hover {
-            background: #c82333;
-        }
-        .db-container {
-            background: white;
-            padding: 20px;
-            border-radius: 5px;
-        }
-        .db-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        .db-table th, .db-table td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-        .db-table th {
-            background-color: #f2f2f2;
+        tt {
+            font-family: 'Courier New', monospace;
         }
     </style>
 </head>
@@ -374,23 +271,108 @@
     </div>
 
     <script>
-        // ==================== FUNCIONES GLOBALES DE AUTENTICACIÓN ====================
+        // ==================== CARRITO DE COMPRAS GLOBAL ====================
+        let carritoCompras = {};
+
+        // Cargar carrito desde localStorage
+        function cargarCarrito() {
+            const guardado = localStorage.getItem('carrito_compras');
+            if (guardado) {
+                carritoCompras = JSON.parse(guardado);
+            } else {
+                carritoCompras = {};
+            }
+        }
+
+        function guardarCarrito() {
+            localStorage.setItem('carrito_compras', JSON.stringify(carritoCompras));
+        }
+
+        function actualizarCarrito(producto, cantidad) {
+            if (producto && producto.trim() !== '' && cantidad && !isNaN(cantidad) && parseInt(cantidad) > 0) {
+                const cant = parseInt(cantidad);
+                if (carritoCompras[producto]) {
+                    carritoCompras[producto] += cant;
+                } else {
+                    carritoCompras[producto] = cant;
+                }
+                guardarCarrito();
+                return true;
+            }
+            return false;
+        }
+
+        window.mostrarCarrito = function() {
+            const container = document.getElementById('carritoLista');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            if (Object.keys(carritoCompras).length === 0) {
+                container.innerHTML = '<div style="color: #666;">El carrito está vacío</div>';
+            } else {
+                for (const [producto, cantidad] of Object.entries(carritoCompras)) {
+                    const div = document.createElement('div');
+                    div.className = 'carrito-item';
+                    div.innerHTML = `Artículo: ${producto}  ud: ${cantidad}`;
+                    container.appendChild(div);
+                }
+            }
+        };
+
+        window.agregarAlCarrito = function(event) {
+            event.preventDefault();
+            const productoInput = document.getElementById('productoInput');
+            const cantidadInput = document.getElementById('cantidadInput');
+            const mensajeDiv = document.getElementById('mensajeCarrito');
+            
+            if (productoInput && cantidadInput) {
+                const producto = productoInput.value;
+                const cantidad = cantidadInput.value;
+                
+                if (actualizarCarrito(producto, cantidad)) {
+                    mensajeDiv.innerHTML = '<div style="background:#d4edda; color:#155724; padding:10px; border-radius:5px; margin-bottom:15px;">✓ Producto añadido al carrito</div>';
+                    productoInput.value = '';
+                    cantidadInput.value = '';
+                    window.mostrarCarrito();
+                    setTimeout(() => {
+                        mensajeDiv.innerHTML = '';
+                    }, 2000);
+                } else {
+                    mensajeDiv.innerHTML = '<div style="background:#f8d7da; color:#721c24; padding:10px; border-radius:5px; margin-bottom:15px;">✗ Error: Ingrese un producto válido y una cantidad numérica positiva</div>';
+                    setTimeout(() => {
+                        mensajeDiv.innerHTML = '';
+                    }, 3000);
+                }
+            }
+            return false;
+        };
+
+        window.vaciarCarrito = function() {
+            carritoCompras = {};
+            guardarCarrito();
+            window.mostrarCarrito();
+            const mensajeDiv = document.getElementById('mensajeCarrito');
+            if (mensajeDiv) {
+                mensajeDiv.innerHTML = '<div style="background:#d4edda; color:#155724; padding:10px; border-radius:5px; margin-bottom:15px;">✓ Carrito vaciado correctamente</div>';
+                setTimeout(() => {
+                    mensajeDiv.innerHTML = '';
+                }, 2000);
+            }
+        };
+
+        cargarCarrito();
+
+        // ==================== FUNCIONES DE AUTENTICACIÓN ====================
         let autenticado = false;
-        let usuarioActual = '';
-        let contrasenaActual = '';
 
         window.mostrarModalAuth = function() {
             const modal = document.getElementById('authModalGlobal');
-            if (modal) {
-                modal.style.display = 'flex';
-            }
+            if (modal) modal.style.display = 'flex';
         };
 
         window.ocultarModalAuth = function() {
             const modal = document.getElementById('authModalGlobal');
-            if (modal) {
-                modal.style.display = 'none';
-            }
+            if (modal) modal.style.display = 'none';
         };
 
         window.procesarAuth = function() {
@@ -404,8 +386,6 @@
                 
                 if (usuario === "Joe" && contrasena === "123") {
                     autenticado = true;
-                    usuarioActual = usuario;
-                    contrasenaActual = contrasena;
                     resultadoDiv.innerHTML = '<div class="acceso-exitoso">Ha conseguido el acceso a la <strong>zona restringida</strong>.</div>';
                     window.ocultarModalAuth();
                 } else {
@@ -605,8 +585,8 @@ http://www.php.net/<br>
 
         const programs = {};
 
-        // Programas 1-37
-        for(let i=1; i<=37; i++) { programs[i] = { title: "Programa " + i, output: "Contenido" }; }
+        // Programas 1-43
+        for(let i=1; i<=43; i++) { programs[i] = { title: "Programa " + i, output: "Contenido" }; }
         
         programs[1] = { title: "2.1 Nuestro primer PHP", output: "Parte de PHP<br>Linea 0-9" };
         programs[2] = { title: "2.2 Variables y tipos", output: "1<br>3.34<br>Hola Mundo" };
@@ -652,31 +632,43 @@ http://www.php.net/<br>
         programs[34] = { title: "6.1 Conexion BD", output: "<div style='background:white; padding:20px;'><h1>Conexion</h1><div style='background:#f0f0f0; padding:15px;'><strong>Conexion con la base de datos conseguida.</strong></div></div>" };
         programs[35] = { title: "6.2 Consultas SELECT", output: "<table border='1'><tr><th>ID</th><th>Nombre</th><th>Apellidos</th><tr><td>1</td><td>Juan</td><td>Perez</td></tr><tr><td>2</td><td>Maria</td><td>Gonzalez</td></tr></table>" };
         programs[36] = { title: "6.3 Insercion registros", output: `<div class="db-container"><h1>Ejemplo de BD con PHP y MySQL</h1>
-            <form onsubmit="procesarInsercion(event)"><tr><tr><td>Nombre:</td><td><input type="text" id="dbNombre"></td></tr>
+            <form onsubmit="procesarInsercion(event)"><table><tr><td>Nombre:</td><td><input type="text" id="dbNombre"></td></tr>
             <tr><td>Apellidos:</td><td><input type="text" id="dbApellidos"></td></tr></table>
             <input type="submit" value="Grabar"></form><div id="mensajeInsercion"></div><hr>
-            <table class="db-table" border="1"><thead><tr><th>Nombre</th><th>Apellidos</th></tr></thead><tbody id="tablaRegistrosInsert"></tbody></table></div>` };
+            <table class="db-table" border="1"><thead><tr><th>Nombre</th><th>Apellidos</th></thead><tbody id="tablaRegistrosInsert"></tbody></table></div>` };
         programs[37] = { title: "6.4 Borrado registros", output: `<div class="db-container"><h1>Ejemplo de BD con PHP y MySQL</h1>
             <div id="mensajeDelete"></div>
-            <table class="db-table" border="1"><thead><tr><th>Nombre</th><th>Apellidos</th><th>Borrar</th></tr></thead><tbody id="tablaRegistrosDelete"></tbody></table></div>` };
+            <table class="db-table" border="1"><thead><tr><th>Nombre</th><th>Apellidos</th><th>Borrar</th></thead><tbody id="tablaRegistrosDelete"></tbody></table></div>` };
+        programs[38] = { title: "7.1 Autenticacion HTTP", output: `<div class="auth-container"><h1>Autenticacion HTTP Basic</h1>
+            <div id="resultadoAutenticacionGlobal"></div>
+            <button class="btn-iniciar" onclick="mostrarModalAuth()">Iniciar autenticacion</button></div>` };
+        programs[39] = { title: "7.2 Validacion archivo", output: "Acceso concedido para: joe" };
+        programs[40] = { title: "7.3 Validacion .htaccess", output: "Usuario autenticado" };
+        programs[41] = { title: "7.4 Validacion MySQL", output: "Usuario autenticado via MySQL" };
+        programs[42] = { title: "8.1 Inicializacion sesion", output: "ID de sesion generado" };
+        programs[43] = { title: "8.2 Ejemplo sesion", output: "Contador de visitas" };
         
-        // PROGRAMA 38 - AUTENTICACION HTTP
-        programs[38] = { 
-            title: "7.1 Autenticacion HTTP basica", 
-            output: `<div class="auth-container">
-                <h1>Autenticacion HTTP Basic</h1>
-                <div id="resultadoAutenticacionGlobal"></div>
-                
-                <button class="btn-iniciar" onclick="mostrarModalAuth()">Iniciar autenticacion</button>
-            </div>`
+        // PROGRAMA 44 - CARRITO DE COMPRA (8.3)
+        programs[44] = { 
+            title: "8.3 Carrito de compra", 
+            output: `<tt>
+                <div class="carrito-container">
+                    <h1>Carrito de compras</h1>
+                    <form class="carrito-form" onsubmit="agregarAlCarrito(event)">
+                        Dime el producto <input type="text" id="productoInput" name="item" size="20"><br>
+                        Cuantas unidades <input type="text" id="cantidadInput" name="cantidad" size="20"><br>
+                        <input type="submit" value="Añadir a la cesta"><br>
+                    </form>
+                    <div id="mensajeCarrito"></div>
+                    <div class="carrito-lista">
+                        <strong>El contenido de la cesta de la compra es:</strong><br>
+                        <div id="carritoLista"></div>
+                    </div>
+                    <button onclick="vaciarCarrito()" style="background:#6c757d; color:white; border:none; padding:5px 15px; cursor:pointer; margin-top:15px;">Vaciar carrito</button>
+                </div>
+            </tt>`
         };
         
-        programs[39] = { title: "7.2 Validacion archivo texto", output: "Acceso concedido para: joe" };
-        programs[40] = { title: "7.3 Validacion .htaccess", output: "Ud. esta autenticado!" };
-        programs[41] = { title: "7.4 Validacion MySQL", output: "Ud. esta autenticado!" };
-        programs[42] = { title: "8.1 Inicializacion sesion", output: "La sesion actual es abvhgfkjkmlu7vnn876bkjhkjhkut6t" };
-        programs[43] = { title: "8.2 Ejemplo sesion", output: "Contador vale: 1" };
-        programs[44] = { title: "8.3 Carrito compra", output: "Carrito con sesiones" };
         programs[45] = { title: "9.1 Establecer cookies", output: "Cookies creadas" };
         programs[46] = { title: "9.1 Recuperar cookies", output: "Cookies leidas" };
         programs[47] = { title: "9.1 Eliminar cookies", output: "Cookies eliminadas" };
@@ -692,7 +684,7 @@ http://www.php.net/<br>
         programs[57] = { title: "Manejo archivos", output: "fopen, fread, fwrite" };
         programs[58] = { title: "Lectura archivos", output: "file_get_contents" };
         programs[59] = { title: "Escritura archivos", output: "file_put_contents" };
-        programs[60] = { title: "10.1 Calendario Simple", output: "<h3>Abril 2026</h3><table border='1' cellpadding='8'><tr><th>Do</th><th>Lu</th><th>Ma</th><th>Mi</th><th>Ju</th><th>Vi</th><th>Sa</th></tr><tr><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td></tr><tr><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td></tr><tr><td>15</td><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td><td>21</td></tr><tr><td>22</td><td>23</td><td>24</td><td>25</td><td>26</td><td>27</td><td>28</td></tr><tr><td>29</td><td>30</td><td></td><td></td><td></td><td></td><td></td></tr></table>" };
+        programs[60] = { title: "10.1 Calendario Simple", output: "<h3>Abril 2026</h3><table border='1' cellpadding='8'><tr><th>Do</th><th>Lu</th><th>Ma</th><th>Mi</th><th>Ju</th><th>Vi</th><th>Sa</th></tr><tr><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td></tr><tr><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td></tr><tr><td>15</td><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td><td>21</td></tr><tr><td>22</td><td>23</td><td>24</td><td>25</td><td>26</td><td>27</td><td>28</td></tr><tr><td>29</td><td>30</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr></table>" };
 
         function renderMenu() {
             const container = document.getElementById('menuContainer');
@@ -733,6 +725,7 @@ http://www.php.net/<br>
             
             if (id === 36) setTimeout(() => window.mostrarTablaInsert(), 50);
             if (id === 37) setTimeout(() => window.mostrarTablaDelete(), 50);
+            if (id === 44) setTimeout(() => window.mostrarCarrito(), 50);
             
             document.querySelectorAll('.program-btn').forEach(btn => {
                 btn.classList.remove('active');
