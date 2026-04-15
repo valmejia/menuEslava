@@ -160,7 +160,7 @@
         .output-body {
             flex: 1;
             padding: 20px;
-            font-family: 'Courier New', monospace;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             font-size: 13px;
             line-height: 1.8;
             overflow-y: auto;
@@ -173,7 +173,6 @@
             padding-bottom: 8px;
             border-bottom: 1px solid #30363d;
             font-size: 1em;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         .output-block {
@@ -189,7 +188,6 @@
             margin-bottom: 10px;
             font-size: 0.85em;
             font-weight: normal;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         .info-message {
@@ -198,47 +196,83 @@
             color: #8b949e;
         }
 
-        /* Estilos para el carrito */
-        .carrito-container {
+        /* Estilos para cookies */
+        .cookie-container {
             background: white;
             color: #333;
             padding: 20px;
             border-radius: 5px;
-            font-family: 'Courier New', monospace;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        .carrito-container h1 {
-            font-size: 1.2em;
+        .cookie-container h1 {
+            font-size: 1.3em;
             margin-bottom: 20px;
             color: #333;
-            font-family: 'Courier New', monospace;
         }
-        .carrito-form input {
+        .cookie-form input {
             margin: 5px 0 10px;
-            padding: 5px;
+            padding: 8px;
             border: 1px solid #ccc;
-            font-family: 'Courier New', monospace;
+            border-radius: 4px;
         }
-        .carrito-form input[type="text"] {
-            width: 200px;
+        .cookie-form input[type="text"] {
+            width: 250px;
         }
-        .carrito-form input[type="submit"] {
+        .cookie-form input[type="submit"] {
             background: #e94560;
             color: white;
             border: none;
-            padding: 5px 15px;
+            padding: 8px 20px;
             cursor: pointer;
             margin-top: 10px;
         }
-        .carrito-lista {
+        .cookie-form input[type="submit"]:hover {
+            background: #c7354e;
+        }
+        .cookie-info {
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 5px;
             margin-top: 20px;
-            padding-top: 10px;
-            border-top: 1px solid #ccc;
         }
-        .carrito-item {
-            margin: 5px 0;
+        .cookie-valor {
+            font-weight: bold;
+            color: #e94560;
         }
-        tt {
-            font-family: 'Courier New', monospace;
+        .btn-volver {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+        .btn-volver:hover {
+            background: #5a6268;
+        }
+        .mensaje-exito {
+            background: #d4edda;
+            color: #155724;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #c3e6cb;
+        }
+        .cookie-recuperada {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        .cookie-no-existe {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
         }
     </style>
 </head>
@@ -247,7 +281,7 @@
         <div class="sidebar">
             <div class="sidebar-header">
                 <h2>Manual de PHP</h2>
-                <span class="program-count">60 Programas</span>
+                <span class="program-count">59 Programas</span>
             </div>
             <div class="menu-container" id="menuContainer">
             </div>
@@ -262,7 +296,7 @@
                     </div>
                     <div class="output-body" id="outputBody">
                         <div class="info-message">
-                            Selecciona un programa del menu izquierdo (1 al 60) para ver la salida esperada
+                            Selecciona un programa del menu izquierdo (1 al 59) para ver la salida esperada
                         </div>
                     </div>
                 </div>
@@ -271,10 +305,111 @@
     </div>
 
     <script>
-        // ==================== CARRITO DE COMPRAS GLOBAL ====================
+        // ==================== COOKIES SIMULADAS GLOBALES ====================
+        let cookiesSimuladas = {};
+
+        function cargarCookies() {
+            const guardado = localStorage.getItem('cookies_simuladas');
+            if (guardado) {
+                cookiesSimuladas = JSON.parse(guardado);
+            } else {
+                cookiesSimuladas = {};
+            }
+        }
+
+        function guardarCookies() {
+            localStorage.setItem('cookies_simuladas', JSON.stringify(cookiesSimuladas));
+        }
+
+        function establecerCookie(nombre, valor, horas) {
+            const expiracion = new Date();
+            expiracion.setTime(expiracion.getTime() + (horas * 60 * 60 * 1000));
+            cookiesSimuladas[nombre] = {
+                valor: valor,
+                expira: expiracion.toLocaleString()
+            };
+            guardarCookies();
+            return true;
+        }
+
+        function obtenerCookie(nombre) {
+            if (cookiesSimuladas[nombre]) {
+                return cookiesSimuladas[nombre].valor;
+            }
+            return null;
+        }
+
+        cargarCookies();
+
+        // ==================== FUNCIÓN PARA RECUPERAR COOKIE (Programa 46) ====================
+        window.recuperarCookie = function() {
+            const resultadoDiv = document.getElementById('cookieRecuperadaResultado');
+            const valorCookie = obtenerCookie('ejemusuario');
+            
+            if (resultadoDiv) {
+                if (valorCookie) {
+                    resultadoDiv.innerHTML = `
+                        <div class="cookie-recuperada">
+                            Se ha establecido una cookie de nombre <strong>ejemusuario</strong> con el valor: <strong class="cookie-valor">${valorCookie}</strong>
+                        </div>
+                    `;
+                } else {
+                    resultadoDiv.innerHTML = `
+                        <div class="cookie-no-existe">
+                            ⚠️ No hay ninguna cookie establecida. Primero use el programa "9.1 Establecer cookies" para crear una cookie.
+                        </div>
+                    `;
+                }
+            }
+        };
+
+        // ==================== FUNCIÓN PARA ESTABLECER COOKIE (Programa 45) ====================
+        window.establecerCookieEjemplo = function(event) {
+            event.preventDefault();
+            const nombreInput = document.getElementById('cookieNombre');
+            const resultadoDiv = document.getElementById('cookieResultado');
+            const formularioDiv = document.getElementById('formularioCookie');
+            const infoDiv = document.getElementById('cookieInfo');
+            
+            if (nombreInput) {
+                const nombre = nombreInput.value;
+                if (nombre && nombre.trim() !== '') {
+                    establecerCookie('ejemusuario', nombre.trim(), 1);
+                    
+                    resultadoDiv.innerHTML = `
+                        <div class="mensaje-exito">
+                            ✓ Se ha establecido una cookie de nombre <strong>ejemusuario</strong> con el valor: 
+                            <strong class="cookie-valor">${nombre.trim()}</strong> que será válida durante 1 hora.
+                        </div>
+                    `;
+                    
+                    formularioDiv.style.display = 'none';
+                    infoDiv.style.display = 'block';
+                    document.getElementById('cookieValorMostrado').innerHTML = nombre.trim();
+                } else {
+                    resultadoDiv.innerHTML = `
+                        <div style="background:#f8d7da; color:#721c24; padding:10px; border-radius:5px;">
+                            ✗ Error: Por favor ingrese un nombre
+                        </div>
+                    `;
+                    setTimeout(() => {
+                        resultadoDiv.innerHTML = '';
+                    }, 3000);
+                }
+            }
+            return false;
+        };
+
+        window.volverAlFormulario = function() {
+            document.getElementById('formularioCookie').style.display = 'block';
+            document.getElementById('cookieInfo').style.display = 'none';
+            document.getElementById('cookieResultado').innerHTML = '';
+            document.getElementById('cookieNombre').value = '';
+        };
+
+        // ==================== CARRITO DE COMPRAS ====================
         let carritoCompras = {};
 
-        // Cargar carrito desde localStorage
         function cargarCarrito() {
             const guardado = localStorage.getItem('carrito_compras');
             if (guardado) {
@@ -330,7 +465,7 @@
                 const cantidad = cantidadInput.value;
                 
                 if (actualizarCarrito(producto, cantidad)) {
-                    mensajeDiv.innerHTML = '<div style="background:#d4edda; color:#155724; padding:10px; border-radius:5px; margin-bottom:15px;">✓ Producto añadido al carrito</div>';
+                    mensajeDiv.innerHTML = '<div class="mensaje-exito">✓ Producto añadido al carrito</div>';
                     productoInput.value = '';
                     cantidadInput.value = '';
                     window.mostrarCarrito();
@@ -338,7 +473,7 @@
                         mensajeDiv.innerHTML = '';
                     }, 2000);
                 } else {
-                    mensajeDiv.innerHTML = '<div style="background:#f8d7da; color:#721c24; padding:10px; border-radius:5px; margin-bottom:15px;">✗ Error: Ingrese un producto válido y una cantidad numérica positiva</div>';
+                    mensajeDiv.innerHTML = '<div style="background:#f8d7da; color:#721c24; padding:10px; border-radius:5px;">✗ Error: Ingrese un producto válido y una cantidad numérica positiva</div>';
                     setTimeout(() => {
                         mensajeDiv.innerHTML = '';
                     }, 3000);
@@ -353,7 +488,7 @@
             window.mostrarCarrito();
             const mensajeDiv = document.getElementById('mensajeCarrito');
             if (mensajeDiv) {
-                mensajeDiv.innerHTML = '<div style="background:#d4edda; color:#155724; padding:10px; border-radius:5px; margin-bottom:15px;">✓ Carrito vaciado correctamente</div>';
+                mensajeDiv.innerHTML = '<div class="mensaje-exito">✓ Carrito vaciado correctamente</div>';
                 setTimeout(() => {
                     mensajeDiv.innerHTML = '';
                 }, 2000);
@@ -585,8 +720,8 @@ http://www.php.net/<br>
 
         const programs = {};
 
-        // Programas 1-43
-        for(let i=1; i<=43; i++) { programs[i] = { title: "Programa " + i, output: "Contenido" }; }
+        // Programas 1-44
+        for(let i=1; i<=44; i++) { programs[i] = { title: "Programa " + i, output: "Contenido" }; }
         
         programs[1] = { title: "2.1 Nuestro primer PHP", output: "Parte de PHP<br>Linea 0-9" };
         programs[2] = { title: "2.2 Variables y tipos", output: "1<br>3.34<br>Hola Mundo" };
@@ -630,11 +765,11 @@ http://www.php.net/<br>
             <input type="radio" name="tipo" value="plano" checked> Texto plano<br><input type="radio" name="tipo" value="html"> HTML<br><br>
             <input type="submit" value="Enviar"></form><div id="resultadoEmail"></div></div>` };
         programs[34] = { title: "6.1 Conexion BD", output: "<div style='background:white; padding:20px;'><h1>Conexion</h1><div style='background:#f0f0f0; padding:15px;'><strong>Conexion con la base de datos conseguida.</strong></div></div>" };
-        programs[35] = { title: "6.2 Consultas SELECT", output: "<table border='1'><tr><th>ID</th><th>Nombre</th><th>Apellidos</th><tr><td>1</td><td>Juan</td><td>Perez</td></tr><tr><td>2</td><td>Maria</td><td>Gonzalez</td></tr></table>" };
+        programs[35] = { title: "6.2 Consultas SELECT", output: "<table border='1'><tr><th>ID</th><th>Nombre</th><th>Apellidos</th><tr><td>1</td><td>Juan<\/td><td>Perez<\/td><\/tr><tr><td>2<\/td><td>Maria<\/td><td>Gonzalez<\/td><\/tr><\/table>" };
         programs[36] = { title: "6.3 Insercion registros", output: `<div class="db-container"><h1>Ejemplo de BD con PHP y MySQL</h1>
-            <form onsubmit="procesarInsercion(event)"><table><tr><td>Nombre:</td><td><input type="text" id="dbNombre"></td></tr>
-            <tr><td>Apellidos:</td><td><input type="text" id="dbApellidos"></td></tr></table>
-            <input type="submit" value="Grabar"></form><div id="mensajeInsercion"></div><hr>
+            <form onsubmit="procesarInsercion(event)"><tr><tr><td>Nombre:</td><td><input type="text" id="dbNombre"></td></tr>
+            <tr><td>Apellidos:</td><td><input type="text" id="dbApellidos">ERC20</tr>
+            </table><input type="submit" value="Grabar"></form><div id="mensajeInsercion"></div><hr>
             <table class="db-table" border="1"><thead><tr><th>Nombre</th><th>Apellidos</th></thead><tbody id="tablaRegistrosInsert"></tbody></table></div>` };
         programs[37] = { title: "6.4 Borrado registros", output: `<div class="db-container"><h1>Ejemplo de BD con PHP y MySQL</h1>
             <div id="mensajeDelete"></div>
@@ -647,31 +782,64 @@ http://www.php.net/<br>
         programs[41] = { title: "7.4 Validacion MySQL", output: "Usuario autenticado via MySQL" };
         programs[42] = { title: "8.1 Inicializacion sesion", output: "ID de sesion generado" };
         programs[43] = { title: "8.2 Ejemplo sesion", output: "Contador de visitas" };
+        programs[44] = { title: "8.3 Carrito compra", output: `<tt><div class="carrito-container"><h1>Carrito de compras</h1>
+            <form class="carrito-form" onsubmit="agregarAlCarrito(event)">Dime el producto <input type="text" id="productoInput" size="20"><br>
+            Cuantas unidades <input type="text" id="cantidadInput" size="20"><br>
+            <input type="submit" value="Añadir a la cesta"><br></form>
+            <div id="mensajeCarrito"></div><div class="carrito-lista"><strong>El contenido de la cesta de la compra es:</strong><br>
+            <div id="carritoLista"></div></div><button onclick="vaciarCarrito()">Vaciar carrito</button></div></tt>` };
         
-        // PROGRAMA 44 - CARRITO DE COMPRA (8.3)
-        programs[44] = { 
-            title: "8.3 Carrito de compra", 
-            output: `<tt>
-                <div class="carrito-container">
-                    <h1>Carrito de compras</h1>
-                    <form class="carrito-form" onsubmit="agregarAlCarrito(event)">
-                        Dime el producto <input type="text" id="productoInput" name="item" size="20"><br>
-                        Cuantas unidades <input type="text" id="cantidadInput" name="cantidad" size="20"><br>
-                        <input type="submit" value="Añadir a la cesta"><br>
+        // PROGRAMA 45 - ESTABLECER COOKIES (9.1)
+        programs[45] = { 
+            title: "9.1 Establecer cookies", 
+            output: `<div class="cookie-container">
+                <h1>Ejemplo de uso de cookie</h1>
+                
+                <div id="formularioCookie">
+                    <form class="cookie-form" onsubmit="establecerCookieEjemplo(event)">
+                        Introduzca su nombre:<br>
+                        <input type="text" id="cookieNombre" name="nombre" placeholder="Escriba su nombre">
+                        <br>
+                        <input type="submit" value="Enviar">
                     </form>
-                    <div id="mensajeCarrito"></div>
-                    <div class="carrito-lista">
-                        <strong>El contenido de la cesta de la compra es:</strong><br>
-                        <div id="carritoLista"></div>
-                    </div>
-                    <button onclick="vaciarCarrito()" style="background:#6c757d; color:white; border:none; padding:5px 15px; cursor:pointer; margin-top:15px;">Vaciar carrito</button>
                 </div>
-            </tt>`
+                
+                <div id="cookieInfo" style="display: none;">
+                    <div class="cookie-info">
+                        Se ha establecido una cookie de nombre <strong>ejemusuario</strong> con el valor: 
+                        <strong class="cookie-valor" id="cookieValorMostrado"></strong> que será válida durante 1 hora.
+                    </div>
+                    <button class="btn-volver" onclick="volverAlFormulario()">Volver</button>
+                </div>
+                
+                <div id="cookieResultado"></div>
+            </div>`
         };
         
-        programs[45] = { title: "9.1 Establecer cookies", output: "Cookies creadas" };
-        programs[46] = { title: "9.1 Recuperar cookies", output: "Cookies leidas" };
-        programs[47] = { title: "9.1 Eliminar cookies", output: "Cookies eliminadas" };
+        // PROGRAMA 46 - RECUPERAR COOKIES (9.1)
+        programs[46] = { 
+            title: "9.1 Recuperar cookies", 
+            output: `<div class="cookie-container">
+                <h1>Ejemplo de recuperar cookie</h1>
+                
+                <div id="cookieRecuperadaResultado" style="margin-bottom: 20px;">
+                    <div class="cookie-info" style="background:#e8f4f8;">
+                        Haga clic en el botón para recuperar la cookie "ejemusuario"
+                    </div>
+                </div>
+                
+                <button onclick="recuperarCookie()" style="background: #e94560; color: white; border: none; padding: 10px 25px; border-radius: 4px; cursor: pointer; font-size: 14px;">
+                    Recuperar cookie
+                </button>
+                
+                <div style="margin-top: 20px; font-size: 12px; color: #666;">
+                    * Nota: Primero debe establecer una cookie usando el programa "9.1 Establecer cookies"
+                </div>
+            </div>`
+        };
+        
+        // NOTA: Programa 47 eliminado (Eliminar cookies)
+        
         programs[48] = { title: "Arrays asociativo", output: "Capitales de paises" };
         programs[49] = { title: "Arrays multidimensional", output: "Notas de alumnos" };
         programs[50] = { title: "Funciones retorno", output: "Area del circulo" };
@@ -684,7 +852,21 @@ http://www.php.net/<br>
         programs[57] = { title: "Manejo archivos", output: "fopen, fread, fwrite" };
         programs[58] = { title: "Lectura archivos", output: "file_get_contents" };
         programs[59] = { title: "Escritura archivos", output: "file_put_contents" };
-        programs[60] = { title: "10.1 Calendario Simple", output: "<h3>Abril 2026</h3><table border='1' cellpadding='8'><tr><th>Do</th><th>Lu</th><th>Ma</th><th>Mi</th><th>Ju</th><th>Vi</th><th>Sa</th></tr><tr><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td></tr><tr><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td></tr><tr><td>15</td><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td><td>21</td></tr><tr><td>22</td><td>23</td><td>24</td><td>25</td><td>26</td><td>27</td><td>28</td></tr><tr><td>29</td><td>30</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr></table>" };
+        programs[60] = { title: "10.1 Calendario Simple", output: "<h3>Abril 2026</h3><table border='1' cellpadding='8'><tr><th>Do</th><th>Lu</th><th>Ma</th><th>Mi</th><th>Ju</th><th>Vi</th><th>Sa</th>对待<tr><td align='center'>1<\/td><td align='center'>2<\/td><td align='center'>3<\/td><td align='center'>4<\/td><td align='center'>5<\/td><td align='center'>6<\/td><td align='center'>7<\/td><\/tr><tr><td align='center'>8<\/td><td align='center'>9<\/td><td align='center'>10<\/td><td align='center'>11<\/td><td align='center'>12<\/td><td align='center'>13<\/td><td align='center'>14<\/td><\/tr><tr><td align='center'>15<\/td><td align='center'>16<\/td><td align='center'>17<\/td><td align='center'>18<\/td><td align='center'>19<\/td><td align='center'>20<\/td><td align='center'>21<\/td><\/tr><tr><td align='center'>22<\/td><td align='center'>23<\/td><td align='center'>24<\/td><td align='center'>25<\/td><td align='center'>26<\/td><td align='center'>27<\/td><td align='center'>28<\/td><\/tr><tr><td align='center'>29<\/td><td align='center'>30<\/td><td align='center'>31<\/td><td>&nbsp;<\/td><td>&nbsp;<\/td><td>&nbsp;<\/td><td>&nbsp;<\/td><\/tr><\/table>" };
+
+        // Reorganizar los índices para que sean consecutivos (1-59)
+        const programasReorganizados = {};
+        let idx = 1;
+        for (let i = 1; i <= 60; i++) {
+            if (programs[i] && i !== 47) {
+                programasReorganizados[idx] = programs[i];
+                idx++;
+            }
+        }
+        
+        // Reemplazar programs con la versión reorganizada
+        Object.keys(programs).forEach(key => delete programs[key]);
+        Object.assign(programs, programasReorganizados);
 
         function renderMenu() {
             const container = document.getElementById('menuContainer');
@@ -694,7 +876,7 @@ http://www.php.net/<br>
             const programList = document.createElement('div');
             programList.className = 'program-list';
             
-            for (let i = 1; i <= 60; i++) {
+            for (let i = 1; i <= 59; i++) {
                 if (programs[i]) {
                     const btn = document.createElement('button');
                     btn.className = 'program-btn';
@@ -740,7 +922,7 @@ http://www.php.net/<br>
             if (outputBody) {
                 outputBody.innerHTML = `
                     <div class="info-message">
-                        Selecciona un programa del menu izquierdo (1 al 60) para ver la salida esperada
+                        Selecciona un programa del menu izquierdo (1 al 59) para ver la salida esperada
                     </div>
                 `;
             }
