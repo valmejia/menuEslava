@@ -369,6 +369,34 @@
             border-radius: 5px;
             text-align: center;
         }
+        /* Estilo para el ejemplo de librerías */
+.libreria-ejemplo {
+    background: white;
+    color: #333;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+.libreria-header {
+    background: #f5f5f5;
+    padding: 12px 15px;
+    font-weight: bold;
+    border-bottom: 1px solid #ddd;
+    font-size: 14px;
+}
+.libreria-content {
+    padding: 20px 15px;
+    background: white;
+    min-height: 150px;
+}
+.libreria-footer {
+    background: #f5f5f5;
+    padding: 12px 15px;
+    border-top: 1px solid #ddd;
+    font-style: italic;
+    font-size: 13px;
+}
     </style>
 </head>
 <body>
@@ -855,19 +883,117 @@ http://www.php.net/<br>
         programs[22] = { title: "2.13 gettype()", output: "integer<br>double<br>string" };
         programs[23] = { title: "2.13 is_int()", output: "true<br>true<br>false" };
         programs[24] = { title: "2.14 Funciones", output: "5<br>263892.5" };
-        programs[25] = { title: "3.1 Librerias", output: "Cabecera y pie de pagina" };
-        programs[26] = { title: "3.2 Plantillas", output: "Pagina con indice" };
-        programs[27] = { title: "3.3 Frame", output: "Frame con enlaces" };
-        programs[28] = { title: "4.1 GET", output: "Nombre recibido: Juan" };
-        programs[29] = { title: "4.1 POST", output: "Formulario POST" };
-        programs[30] = { title: "4.1 SERVER", output: "IP, navegador, metodo" };
-        programs[31] = { title: "5.1 Formulario simple", output: `<div style="background:white; padding:20px;"><h1>Ejemplo de procesado de formularios</h1>
-            <form onsubmit="procesarFormularioGet(event)"><label>Introduzca su nombre:</label>
-            <input type="text" id="nombreInputGet" style="display:block; margin:10px 0; padding:8px;">
-            <input type="submit" value="Enviar"></form><div id="resultadoFormularioGet"></div></div>` };
-        programs[32] = { title: "5.2 GET vs POST", output: `<div style="background:white; padding:20px;"><h1>GET vs POST</h1>
-            <div><h3>GET</h3><form onsubmit="procesarFormularioGet(event)"><input type="text" id="nombreInputGet"><input type="submit" value="Enviar"></form><div id="resultadoFormularioGet"></div></div>
-            <hr><div><h3>POST</h3><form onsubmit="procesarFormularioPost(event)"><input type="text" id="nombreInputPost"><input type="submit" value="Enviar"></form><div id="resultadoFormularioPost"></div></div></div>` };
+       programs[25] = { 
+    title: "3.1 Librerias - include", 
+    output: `<div class="libreria-ejemplo">
+        <div class="libreria-header">Esta cabecera estará en todas sus páginas.</div>
+        <div class="libreria-content">
+            <strong>Página 1</strong><br><br>
+            Contenido blablal blalb alb<br>
+            más cosas...<br>
+            fin
+        </div>
+        <div class="libreria-footer">
+            Este es el pie de página.<br>
+            Autor: John Doe
+        </div>
+    </div>`
+};
+        // PROGRAMA 26
+        programs[26] = { title: "3.2 Paginas con plantillas (Ejemplo 2)", output: `<div style="background:white; color:#333; padding:0; border-radius:5px;">
+    <div style="background:#f5f5f5; padding:12px 15px; font-weight:bold; border-bottom:1px solid #ddd;">Esta cabecera estará en todas sus páginas.</div>
+    <div style="padding:20px 15px; background:white;">
+        ---<br><br>
+        Esta es otra página<br><br>
+        ---<br><br>
+        <strong>Pagina 1</strong> completamente distinta<br>
+        <strong>Pagina 2</strong><br><br>
+        pero comparte el pie y la cabecera con la otra.<br><br>
+        ---
+    </div>
+    <div style="background:#f5f5f5; padding:12px 15px; border-top:1px solid #ddd;">
+        Este es el pie de página.<br>
+        Autor: John Doe
+    </div>
+</div>` };
+        
+  // PROGRAMA 27
+        programs[27] = { title: "3.3 Enlace externo con frame", output: `<div style="background:white; border-radius:5px; overflow:hidden;">
+    <div style="background:#f5f5f5; padding:10px 15px; border-bottom:1px solid #ddd;">
+        <a href="https://www.php.net" target="contenidoFrame" style="color:#0066cc; text-decoration:none;">Ir a PHP.net</a> |
+        <a href="https://www.w3schools.com/php/" target="contenidoFrame" style="color:#0066cc; text-decoration:none;">Ir a W3Schools PHP</a> |
+        <a href="https://www.php.net/manual/es/" target="contenidoFrame" style="color:#0066cc; text-decoration:none;">Manual de PHP</a>
+    </div>
+    <div style="padding:0;">
+        <iframe name="contenidoFrame" width="100%" height="450" style="border:1px solid #ccc; background:white;" srcdoc='
+            <html><head><style>body{font-family:Segoe UI,sans-serif;padding:20px;}</style></head>
+            <body>
+                <div style="background:#f0f0f0; padding:15px;"><strong>Parte de arriba.</strong></div>
+                <hr><h2>What is PHP?</h2><p>PHP is a widely-used general-purpose scripting language...</p>
+                <hr><h2>PHP 8.3 Released!</h2><p>The PHP development team announces PHP 8.3...</p>
+                <hr><div style="background:#f0f0f0; padding:10px; text-align:center;"><strong>WebHosting Talk</strong><br>"Now Featuring PHP Forums"</div>
+                <hr><div style="background:#f0f0f0; padding:10px;"><strong>Parte de abajo.</strong></div>
+            </body>
+            </html>
+        '></iframe>
+    </div>
+</div>` };
+        
+        programs[28] = { title: "4.1 register_globals - Uso de GET", output: "Nombre recibido: Juan" };
+        programs[29] = { title: "4.1 Uso de POST", output: "Formulario POST para enviar datos" };
+        programs[30] = { title: "4.1 Uso de $_SERVER", output: "IP del cliente: 127.0.0.1<br>Navegador: Mozilla/5.0<br>Metodo de peticion: GET" };
+        
+        // PROGRAMA 31 - FORMULARIO SIMPLE (GET)
+        programs[31] = { 
+            title: "5.1 Formulario simple (GET)", 
+            output: `<div class="formulario-ejemplo">
+                <h1>Ejemplo de procesado de formularios</h1>
+                <div class="metodo-info"><strong>Metodo GET:</strong> Los datos se envian en la URL</div>
+                <form id="formularioGet" onsubmit="procesarFormularioGet(event)">
+                    <label>Introduzca su nombre:</label>
+                    <input type="text" id="nombreInputGet" name="nombre" placeholder="Escriba su nombre">
+                    <br>
+                    <input type="submit" value="Enviar">
+                </form>
+                <div id="resultadoFormularioGet" style="margin-top:20px;"></div>
+            </div>`
+        };
+        
+        // PROGRAMA 32 - METODO GET vs POST
+        programs[32] = { 
+            title: "5.2 Metodo GET vs POST", 
+            output: `<div class="formulario-ejemplo">
+                <h1>Ejemplo de procesado de formularios</h1>
+                
+                <div style="margin-bottom:30px;">
+                    <h3 style="color:#e94560;">Metodo GET</h3>
+                    <div class="metodo-info"><strong>GET:</strong> Los datos van en la URL (se pueden ver en la barra de direcciones)</div>
+                    <form id="formularioGetVsPost" onsubmit="procesarFormularioGet(event)">
+                        <label>Introduzca su nombre:</label>
+                        <input type="text" id="nombreInputGet" name="nombre" placeholder="Escriba su nombre">
+                        <br>
+                        <input type="submit" value="Enviar con GET">
+                    </form>
+                    <div id="resultadoFormularioGet" style="margin-top:20px;"></div>
+                </div>
+                
+                <hr style="margin:20px 0;">
+                
+                <div style="margin-bottom:20px;">
+                    <h3 style="color:#2ea043;">Metodo POST</h3>
+                    <div class="metodo-info"><strong>POST:</strong> Los datos van en el cuerpo de la peticion (no se ven en la URL)</div>
+                    <form id="formularioPostVsGet" onsubmit="procesarFormularioPost(event)">
+                        <label>Introduzca su nombre:</label>
+                        <input type="text" id="nombreInputPost" name="nombre" placeholder="Escriba su nombre">
+                        <br>
+                        <input type="submit" value="Enviar con POST">
+                    </form>
+                    <div id="resultadoFormularioPost" style="margin-top:20px;"></div>
+                </div>
+            </div>`
+        };
+       
+
         programs[33] = { title: "5.3 Envio email", output: `<div style="background:white; padding:20px;"><h1>Ejemplo de envio de email</h1>
             <form onsubmit="enviarEmailSimulado(event)"><label>Email:</label><input type="text" id="emailDireccion" style="display:block; margin:10px 0; padding:8px;">
             <input type="radio" name="tipo" value="plano" checked> Texto plano<br><input type="radio" name="tipo" value="html"> HTML<br><br>
